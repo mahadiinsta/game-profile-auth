@@ -1,14 +1,30 @@
 import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import GithubProvider from 'next-auth/providers/github'
 import GoogleProvider from 'next-auth/providers/google'
+
+// import firebase from 'firebase/app'
+// import 'firebase/firestore'
+
+// const firebaseConfig = {
+//   apiKey: process.env.FIREBASE_GOOGLE_API_KEY,
+//   authDomain: process.env.FIREBASE_GOOGLE_AUTH_DOMAIN,
+//   projectId: process.env.FIREBASE_GOOGLE_PROJECT_ID,
+//   storageBucket: process.env.FIREBASE_GOOGLE_STORAGE_BUCKET,
+//   messagingSenderId: process.env.FIREBASE_GOOGLE_MESSANGING_SENDER_ID,
+//   appId: process.env.FIREBASE_GOOGLE_APP_ID,
+// }
+
+// const firestore = (
+//   firebase.apps[0] ?? firebase.initializeApp(firebaseConfig)
+// ).firestore()
+
 export default NextAuth({
   // Configure one or more authentication providers
   providers: [
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
-        username: {
+        email: {
           label: 'User Email',
           type: 'text',
           placeholder: 'demo@email.com',
@@ -37,10 +53,6 @@ export default NextAuth({
         return null
       },
     }),
-    GithubProvider({
-      clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET,
-    }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -54,6 +66,12 @@ export default NextAuth({
     }),
     // ...add more providers here
   ],
+  pages: {
+    signIn: '/auth/signin',
+    singOut: '/auth/signout',
+  },
+  // adapter: FirebaseAdapter(firestore),
+
   //   callbacks: {
   //     async jwt({ token, account }) {
   //       // Persist the OAuth access_token to the token right after signin
